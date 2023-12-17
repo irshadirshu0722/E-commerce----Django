@@ -1,0 +1,106 @@
+{% extends 'users/base.html' %} {% block body %}
+<div class="container" style="height: 88vh; width: 100%">
+  <div
+    class="row"
+    style="height: 100vh; width: 100%; display: flex; justify-content: center"
+  >
+    <div
+      class=""
+      style="display: flex; align-items: center; justify-content: center"
+    >
+      <div class="card">
+        <div class="card-header bg-dark">
+          <div class="card-title text-white">Login</div>
+        </div>
+        <div class="card-body">
+          <form method="POST" id="loginform">
+            {% csrf_token %}
+            <p style="width: 1em; text-wrap: wrap">{{form.errors}}</p>
+
+            {% for field in form %}
+            <div
+              class="form-group"
+              style="display: grid; grid-template-columns: 1fr 2fr"
+            >
+              <label for="">{{field.name}}</label>
+
+              {{field}}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-dark">Login</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  console.log("entering login page");
+
+  document
+    .getElementById("loginform")
+    .addEventListener("submit", async function (e) {
+      e.preventDefault();
+      console.error("Login success");
+
+      try {
+        const formData = new FormData(this);
+        const response = await fetch("/auth/logincheck/", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (response.ok) {
+          const responseData = await response.json();
+          console.log(responseData.token);
+
+          localStorage.setItem("authToken", responseData.token);
+
+          window.location.href = "/";
+
+          // Store the token in localStorage
+        } else {
+          console.error("Login failed");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    });
+</script>
+<!-- <script type="text/javascript">
+  console.log("entering login page");
+  // import axios from "https://cdn.jsdelivr.net/npm/axios/dist/axios.min.mjs";
+  console.log("login page");
+  $(document).ready(function () {
+    $("#loginform").submit(async function (e) {
+      e.preventDefault();
+
+      $.ajax({
+        type: "POST",
+        url: "/auth/logincheck/", // Update the URL based on your project structure
+        data: $(this).serialize(),
+        success: function (response) {
+          
+
+          console.log("user hit submit");
+          // Optionally, redirect the user to another page
+          // window.location.href = "/"; // Update the URL accordingly
+        },
+        error: function (error) {
+          console.log(error);
+        },
+      });
+      // try {
+      //   const response = await axios.post("/auth/login/", new FormData(this));
+      //   if (response.status == 200) {
+      //     console.log("user_login");
+      //     window.location.href = "/";
+      //   }
+      // } catch (error) {
+      //   console.error(error);
+      // }
+    });
+  });
+</script> -->
+{% endblock %}

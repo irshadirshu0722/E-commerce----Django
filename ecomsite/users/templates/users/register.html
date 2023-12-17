@@ -1,0 +1,36 @@
+{% extends 'users/base.html' %} {% block body %}
+<div class="container" style="height: 88vh; width: 100%">
+  <div
+    class="row"
+    style="height: 100vh; width: 100%; display: flex; justify-content: center"
+  >
+    <div
+      class=""
+      style="display: flex; align-items: center; justify-content: center"
+    >
+      <div class="card">
+        <div class="card-header bg-dark">
+          <div class="card-title text-white">Register</div>
+        </div>
+        <div class="card-body">
+          <p>{{form.errors}}</p>
+          <form method="POST">
+            {% csrf_token %} {% for field in form %}
+            <div
+              class="form-group"
+              style="display: grid; grid-template-columns: 1fr 2fr"
+            >
+              <label for="">{{field.name}}</label>
+
+              {{field}}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-dark">Register</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
